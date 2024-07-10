@@ -1,6 +1,6 @@
 import unittest
 from pact import Verifier
-from global_values import BASE_URL
+from global_values import BASE_URL, SHOPIFY_BASE_URL
 
 
 class ProviderVerification(unittest.TestCase):
@@ -17,8 +17,12 @@ class ProviderVerification(unittest.TestCase):
         verifierEvent.verify_pacts('./tests/pacts/eventconsumer-eventprovider.json')
 
     def test_verify_identity_provider(self):
-        verifierEvent = Verifier(provider='IdentityConsumer', provider_base_url=BASE_URL)
-        verifierEvent.verify_pacts('./tests/pacts/identityconsumer-identityprovider.json')
+        verifierIdentity = Verifier(provider='IdentityConsumer', provider_base_url=BASE_URL)
+        verifierIdentity.verify_pacts('./tests/pacts/identityconsumer-identityprovider.json')
+
+    def test_verify_single_product_provider(self):
+        verifier = Verifier(provider='ShopifyProvider', provider_base_url=SHOPIFY_BASE_URL)
+        verifier.verify_pacts('./tests/pacts/shopifyconsumer-shopifyprovider.json')
 
 
 if __name__ == '__main__':
