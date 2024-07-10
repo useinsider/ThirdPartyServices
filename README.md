@@ -1,7 +1,7 @@
 # ThirdPartyServices
 # Pact Contract Testing
 
-Bu proje, tüketici ve sağlayıcı arasında kontrat testleri gerçekleştirmek için kullanılmaktadır.
+Bu proje, entegrasyonların contract testlerini gerçekleştirmek için geliştirildi.
 
 ## Kurulum
 
