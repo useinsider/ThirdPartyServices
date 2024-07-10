@@ -2,7 +2,6 @@ import atexit
 import unittest
 from pact import Consumer, Provider
 import requests
-
 import os
 
 # Get API key from environment variable
@@ -10,15 +9,14 @@ apikey = os.getenv('SHOPIFY_API_KEY')
 if apikey is None:
     raise ValueError("API key (SHOPIFY_API_KEY) must be set as an environment variable.")
 
-
-# Pact konfigürasyonu
+# Pact configurations
 pact = Consumer('ShopifyConsumer').has_pact_with(Provider('ShopifyProvider'), pact_dir='./pacts')
 pact.start_service()  # Pact servisini başlatıyoruz
-atexit.register(pact.stop_service)  # Servisin durdurulmasını sağlıyoruz
+atexit.register(pact.stop_service)
 
 class ShopifyGetRequestContract(unittest.TestCase):
     def test_get_shopify_product(self):
-        # Beklenen yanıt verisi
+
         expected_response = {
                 "product": {
                     "id": 7183556673579,
@@ -107,19 +105,18 @@ class ShopifyGetRequestContract(unittest.TestCase):
                 }
         }
 
-        # İstek başlıkları
         headers = {
             "X-Shopify-Access-Token": apikey
         }
 
-        # Pact etkileşimini tanımlıyoruz
+        # Define the Pact interaction
         (pact
          .given('Product exists in Shopify store')
          .upon_receiving('a request to get product details')
          .with_request('get', '/admin/products/7183556673579.json', headers=headers)
          .will_respond_with(200, body=expected_response))
 
-        # Pact servisi çalışırken isteği gönderiyoruz ve yanıtı kontrol ediyoruz
+        # With the Pact service running, send the request and check the response
         with pact:
             result = requests.get(pact.uri + f'/admin/products/7183556673579.json', headers=headers)
             self.assertEqual(result.json(), expected_response)

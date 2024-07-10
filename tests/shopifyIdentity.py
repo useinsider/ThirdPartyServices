@@ -4,17 +4,16 @@ from pact import Consumer, Provider
 import requests
 from global_values import EMAIL, PARTNER, INSIDERID
 
-# Pact konfigürasyonu
+# Pact configurations
 pact = Consumer('IdentityConsumer').has_pact_with(Provider('IdentityProvider'), pact_dir='./pacts')
-pact.start_service()  # Pact servisini başlatıyoruz
-atexit.register(pact.stop_service)  # Servisin durdurulmasını sağlıyoruz
+pact.start_service()  # Pact services starting
+atexit.register(pact.stop_service)
 
 class IdentityGetContract(unittest.TestCase):
     def test_get_identity(self):
-        # Beklenen yanıt verisi
+
         expected_response = INSIDERID
 
-        # Gönderilecek istek verisi
         request_body = {
             "partner": PARTNER,
             "read_only": True,
@@ -23,14 +22,14 @@ class IdentityGetContract(unittest.TestCase):
             }
         }
 
-        # Pact etkileşimini tanımlıyoruz
+        # Define the Pact interaction
         (pact
          .given('User with email exists')
          .upon_receiving('a request to get identity')
          .with_request('post', '/api/identity/v1/get', body=request_body)
          .will_respond_with(200, body=expected_response))
 
-        # Pact servisi çalışırken isteği gönderiyoruz ve yanıtı kontrol ediyoruz
+        # With the Pact service running, send the request and check the response
         with pact:
             result = requests.post(pact.uri + '/api/identity/v1/get', json=request_body)
             self.assertEqual(result.status_code, 200)

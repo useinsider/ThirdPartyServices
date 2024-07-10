@@ -5,7 +5,7 @@ import requests
 from global_values import EMAIL, PARTNER
 
 
-# Pact konfigürasyonu
+# Pact configurations
 pact = Consumer('UserCreateConsumer').has_pact_with(Provider('UserCreateProvider'), pact_dir='./pacts')
 pact.start_service()  # Pact servisini başlatıyoruz
 atexit.register(pact.stop_service)  # Servisin durdurulmasını sağlıyoruz
@@ -34,14 +34,14 @@ class UserCreateContract(unittest.TestCase):
 
         expected_response = {}
 
-        # Pact etkileşimini tanımlıyoruz
+        # Define the Pact interaction
         (pact
          .given('User with email exists')
          .upon_receiving('a request to update attributes')
          .with_request('post', '/api/attribute/v1/update', body=request_body)
          .will_respond_with(200, body=expected_response))
 
-        # Pact servisi çalışırken isteği gönderiyoruz ve yanıtı kontrol ediyoruz
+        # With the Pact service running, send the request and check the response
         with pact:
             result = requests.post(pact.uri + '/api/attribute/v1/update', json=request_body)
             self.assertEqual(result.status_code, 200)

@@ -4,17 +4,16 @@ from pact import Consumer, Provider
 import requests
 from global_values import EMAIL, PARTNER
 
-# Pact konfigürasyonu
+# Pact configurations
 pact = Consumer('EventConsumer').has_pact_with(Provider('EventProvider'), pact_dir='./pacts')
-pact.start_service()  # Pact servisini başlatıyoruz
-atexit.register(pact.stop_service)  # Servisin durdurulmasını sağlıyoruz
+pact.start_service()  # Pact services starting
+atexit.register(pact.stop_service)
 
 class EventTriggerContract(unittest.TestCase):
     def test_trigger_event(self):
-        # Beklenen yanıt verisi
+
         expected_response = {"eren": True}
 
-        # Gönderilecek istek verisi
         request_body = {
             "partner": PARTNER,
             "source": "email",
@@ -29,14 +28,14 @@ class EventTriggerContract(unittest.TestCase):
             ]
         }
 
-        # Pact etkileşimini tanımlıyoruz
+        # Define the Pact interaction
         (pact
          .given('User with email exists')
          .upon_receiving('a request to insert an event')
          .with_request('post', '/api/event/v1/insert', body=request_body)
          .will_respond_with(200, body=expected_response))
 
-        # Pact servisi çalışırken isteği gönderiyoruz ve yanıtı kontrol ediyoruz
+        # With the Pact service running, send the request and check the response
         with pact:
             result = requests.post(pact.uri + '/api/event/v1/insert', json=request_body)
             self.assertEqual(result.status_code, 200)

@@ -21,8 +21,8 @@ class ProviderVerification(unittest.TestCase):
         verifierIdentity.verify_pacts('./tests/pacts/identityconsumer-identityprovider.json')
 
     def test_verify_single_product_provider(self):
-        verifier = Verifier(provider='ShopifyProvider', provider_base_url=SHOPIFY_BASE_URL)
-        verifier.verify_pacts('./tests/pacts/shopifyconsumer-shopifyprovider.json')
+        verifierSingleProduct = Verifier(provider='ShopifyProvider', provider_base_url=SHOPIFY_BASE_URL)
+        verifierSingleProduct.verify_pacts('./tests/pacts/shopifyconsumer-shopifyprovider.json')
 
 
 if __name__ == '__main__':
