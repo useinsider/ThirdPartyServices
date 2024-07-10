@@ -20,3 +20,7 @@ python tests/shopifyTriggerEvent.py
 Provider testlerini çalıştırmak için:
 
 python verify_provider.py
+
+Global değerler aşağıdaki dizinde tutulur:
+ 
+ThirdPartyServices/global_values.py
