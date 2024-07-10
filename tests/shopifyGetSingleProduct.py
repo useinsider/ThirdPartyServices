@@ -3,7 +3,13 @@ import unittest
 from pact import Consumer, Provider
 import requests
 
-from global_values import SHOPIFYAPIKEY
+import os
+
+# Get API key from environment variable
+apikey = os.getenv('SHOPIFY_API_KEY')
+if apikey is None:
+    raise ValueError("API key (SHOPIFY_API_KEY) must be set as an environment variable.")
+
 
 # Pact konfigürasyonu
 pact = Consumer('ShopifyConsumer').has_pact_with(Provider('ShopifyProvider'), pact_dir='./pacts')
@@ -103,7 +109,7 @@ class ShopifyGetRequestContract(unittest.TestCase):
 
         # İstek başlıkları
         headers = {
-            "X-Shopify-Access-Token": SHOPIFYAPIKEY
+            "X-Shopify-Access-Token": apikey
         }
 
         # Pact etkileşimini tanımlıyoruz

@@ -12,10 +12,15 @@ pip install -r requirements.txt
 
 Consumer testlerini çalıştırmak için:
 
-python tests/shopifyContactProfile.py
-python tests/shopifyCreateUser.py
-python tests/shopifyIdentity.py
-python tests/shopifyTriggerEvent.py
+pre-conditions:
+go to directory cd tests
+export SHOPIFY_API_KEY='paste_current_key'
+
+python shopifyGetSingleProduct.py
+python shopifyContactProfile.py
+python shopifyCreateUser.py
+python shopifyIdentity.py
+python shopifyTriggerEvent.py
 
 Provider testlerini çalıştırmak için:
 
