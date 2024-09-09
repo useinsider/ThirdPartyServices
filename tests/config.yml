@@ -1,0 +1,31 @@
+# config.yml
+
+# Provider configuration
+provider:
+  name: "SearchReportProvider"   # Provider'ın adı
+  base_url: "http://localhost:8080"  # Provider'ın yerel ortamda çalıştığı URL
+
+# Pact Broker configuration (optional, if using a broker)
+pact_broker:
+  url: "http://localhost:9292/"  # Pact Broker URL'i
+  username: "your-username"  # Pact Broker'a erişim için kullanıcı adı
+  password: "your-password"  # Pact Broker'a erişim için parola
+  consumer_version_tag: "dev"  # Tüketiciye ait sürüm etiketleri (örn. dev, prod)
+  provider_version_tag: "master"  # Sağlayıcıya ait sürüm etiketleri (örn. master, staging)
+  enable_ssl_verification: true  # SSL doğrulamasını etkinleştir (gerektiğinde false yapılabilir)
+
+# Pact files path (for local testing without broker)
+pact_files:
+  path: "./pacts"  # Pact dosyalarının yerel olarak bulunduğu klasör
+
+# Verification configuration
+verification:
+  publish_results: true  # Pact Broker'a test sonuçlarını otomatik olarak yayınla
+  provider_version: "1.0.0"  # Provider'ın versiyonu (test sonuçlarını yayınlamak için kullanılır)
+  retry_attempts: 3  # Pact doğrulaması başarısız olursa kaç kez yeniden denensin
+  timeout: 5000  # Sağlayıcı API'ye yapılan istekler için zaman aşımı (ms cinsinden)
+
+# Test environment variables (optional)
+environment:
+  ENV: "local"  # Testin çalıştığı ortam (örn. local, dev, prod)
+  API_KEY: "your-api-key"  # Sağlayıcı API için kullanılacak olan API anahtarı (gerekliyse)

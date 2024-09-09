@@ -1,0 +1,22 @@
+services:
+  broker-pact:
+    image: pactfoundation/pact-broker
+    ports:
+      - "9292:9292"
+    environment:
+      PACT_BROKER_DATABASE_USERNAME: pactbrokeruser
+      PACT_BROKER_DATABASE_PASSWORD: pactbrokerpass
+      PACT_BROKER_DATABASE_NAME: pactbroker
+      PACT_BROKER_DATABASE_HOST: db
+      PACT_BROKER_DATABASE_PORT: 5432
+    depends_on:
+      - db
+
+  db:
+    image: postgres:12
+    environment:
+      POSTGRES_USER: pactbrokeruser
+      POSTGRES_PASSWORD: pactbrokerpass
+      POSTGRES_DB: pactbroker
+    ports:
+      - "5432:5432"
